@@ -1,0 +1,289 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;500;600&display=swap');
+  :root { --sc-red:#eb1b26; --sc-dark-red:#a40e16; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'Poppins',sans-serif; }
+  .wrap { max-width:920px; margin:0 auto; padding:1rem 0 2rem; }
+  .top-bar { display:flex; align-items:center; gap:14px; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:2px solid var(--sc-red); }
+  .top-bar svg { height:26px; flex-shrink:0; }
+  .top-bar h1 { font-family:'Anton',sans-serif; font-size:20px; text-transform:uppercase; letter-spacing:.04em; color:var(--color-text-primary); }
+  .top-bar .meta { margin-left:auto; display:flex; gap:16px; }
+  .meta-stat { text-align:right; }
+  .meta-stat .val { font-size:20px; font-weight:500; color:var(--sc-red); display:block; line-height:1; }
+  .meta-stat .lbl { font-size:10px; color:var(--color-text-secondary); text-transform:uppercase; letter-spacing:.06em; }
+  .phase-grid { display:flex; flex-direction:column; gap:12px; }
+  .phase-card { background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); overflow:hidden; }
+  .phase-head { display:flex; align-items:center; gap:12px; padding:12px 16px; cursor:pointer; user-select:none; }
+  .phase-num { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:500; flex-shrink:0; }
+  .ph-done { background:#E1F5EE; color:#085041; }
+  .ph-active { background:#FCEBEB; color:#791F1F; }
+  .ph-pending { background:var(--color-background-secondary); color:var(--color-text-secondary); }
+  .phase-info { flex:1; }
+  .phase-title { font-size:14px; font-weight:500; color:var(--color-text-primary); }
+  .phase-sub { font-size:11px; color:var(--color-text-secondary); margin-top:1px; }
+  .phase-badge { font-size:10px; font-weight:500; padding:3px 10px; border-radius:99px; border:1px solid; flex-shrink:0; }
+  .badge-done { background:#E1F5EE; color:#085041; border-color:#5DCAA5; }
+  .badge-active { background:#FCEBEB; color:#791F1F; border-color:#F09595; }
+  .badge-pending { background:var(--color-background-secondary); color:var(--color-text-secondary); border-color:var(--color-border-tertiary); }
+  .phase-bar-wrap { height:3px; background:var(--color-background-tertiary); margin:0 16px 0; border-radius:2px; overflow:hidden; }
+  .phase-bar-fill { height:100%; background:var(--sc-red); border-radius:2px; transition:width .6s ease; }
+  .phase-tasks { padding:0 16px 14px; }
+  .task-list { display:flex; flex-direction:column; gap:5px; margin-top:10px; }
+  .task { display:flex; align-items:flex-start; gap:10px; padding:8px 10px; border-radius:var(--border-radius-md); background:var(--color-background-secondary); cursor:pointer; transition:background .15s; }
+  .task:hover { background:var(--color-background-tertiary); }
+  .tbox { width:16px; height:16px; border-radius:3px; border:1.5px solid var(--color-border-secondary); flex-shrink:0; margin-top:1px; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+  .tbox.done { background:var(--sc-red); border-color:var(--sc-red); }
+  .tbox.done::after { content:''; width:8px; height:5px; border-left:1.5px solid #fff; border-bottom:1.5px solid #fff; transform:rotate(-45deg) translateY(-1px); display:block; }
+  .task-text { flex:1; font-size:12px; color:var(--color-text-primary); line-height:1.5; }
+  .task-tag { font-size:10px; padding:2px 6px; border-radius:4px; flex-shrink:0; font-weight:500; }
+  .tag-test { background:#EEEDFE; color:#3C3489; }
+  .tag-core { background:#E6F1FB; color:#0C447C; }
+  .tag-ui { background:#E1F5EE; color:#085041; }
+  .tag-export { background:#FAEEDA; color:#633806; }
+  .tag-security { background:#FCEBEB; color:#791F1F; }
+  .divider { height:0.5px; background:var(--color-border-tertiary); margin:8px 0; }
+  .test-section { background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px 12px; }
+  .test-section-title { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:.07em; color:var(--color-text-secondary); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+  .test-section-title::before { content:''; width:8px; height:8px; border-radius:50%; background:#534AB7; flex-shrink:0; }
+  .test-file { display:flex; align-items:center; justify-content:space-between; padding:5px 8px; background:var(--color-background-primary); border-radius:var(--border-radius-md); margin-bottom:4px; border:0.5px solid var(--color-border-tertiary); }
+  .test-file .name { font-size:11px; font-family:monospace; color:var(--color-text-primary); }
+  .test-file .count { font-size:10px; color:#534AB7; font-weight:500; }
+  .global-bar-wrap { background:var(--color-background-secondary); border-radius:var(--border-radius-lg); padding:14px 16px; margin-bottom:1.5rem; }
+  .global-bar-top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; }
+  .global-bar-top span { font-size:12px; color:var(--color-text-secondary); }
+  .global-bar-top strong { font-size:14px; color:var(--color-text-primary); font-weight:500; }
+  .gbar { height:8px; background:var(--color-background-tertiary); border-radius:4px; overflow:hidden; }
+  .gbar-fill { height:100%; background:var(--sc-red); border-radius:4px; transition:width .8s ease; }
+  .chevron { font-size:11px; color:var(--color-text-secondary); transition:transform .2s; flex-shrink:0; }
+  .phase-tasks.collapsed { display:none; }
+  .action-row { display:flex; gap:10px; margin-top:1.5rem; }
+  .action-btn { flex:1; padding:11px; background:transparent; border:0.5px solid var(--color-border-secondary); border-radius:var(--border-radius-md); font-family:'Poppins',sans-serif; font-size:12px; color:var(--color-text-primary); cursor:pointer; transition:background .15s; }
+  .action-btn:hover { background:var(--color-background-secondary); }
+  .action-btn.primary { background:var(--sc-red); color:#fff; border-color:var(--sc-red); }
+  .action-btn.primary:hover { background:var(--sc-dark-red); border-color:var(--sc-dark-red); }
+</style>
+
+<div class="wrap">
+  <h2 class="sr-only">CV Builder Pro — Phase tracker with unit testing status and task checklist</h2>
+
+  <div class="top-bar">
+    <svg viewBox="0 0 88.194804 39.567375" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(1154.6313,-99.845264)">
+        <path fill="#eb1b26" d="m -1115.1899,99.845264 a 4.0626351,4.0626351 0 0 0 -3.7237,2.438096 h -2.1383 v 0.38368 h -5.9907 c -2.2904,0 -4.2007,1.83906 -4.2007,4.1171 v 12.80001 c 0,2.27804 1.9103,4.11561 4.2007,4.11561 h 12.4648 a 1.1440361,1.1440361 0 0 0 1.144,-1.14396 1.1440361,1.1440361 0 0 0 -1.144,-1.14396 h -12.4648 c -1.0965,0 -1.9125,-0.81267 -1.9125,-1.82769 v -12.80001 c 0,-1.01501 0.816,-1.82886 1.9125,-1.82886 h 5.9907 v 0.3754 h 2.0582 a 4.0626351,4.0626351 0 0 0 3.8038,2.6397 h 1.073 v -8.125116 z m 8.3308,0 v 1.556026 h -2.2031 c -0.3677,0 -0.6639,0.29587 -0.6639,0.66362 v 0.46202 c 0,0.36775 0.2962,0.66362 0.6639,0.66362 h 2.2031 v 1.43454 h -2.2031 c -0.3677,0 -0.6639,0.29617 -0.6639,0.66392 v 0.46171 c 0,0.36776 0.2962,0.66393 0.6639,0.66393 h 2.2031 v 1.55573 h 1.0728 a 4.0626351,4.0626351 0 0 0 3.8037,-2.6397 h 2.0582 v -0.3754 h 5.899 c 1.0965,0 1.9128,0.81385 1.9128,1.82886 v 12.80001 c 0,1.01502 -0.8163,1.82769 -1.9128,1.82769 h -12.2088 a 1.1440361,1.1440361 0 0 0 -1.144,1.14396 1.1440361,1.1440361 0 0 0 1.144,1.14396 h 12.2088 c 2.2905,0 4.2008,-1.83757 4.2008,-4.11561 v -12.80001 c 0,-2.27804 -1.9103,-4.1171 -4.2008,-4.1171 h -5.899 v -0.38368 h -2.138 a 4.0626351,4.0626351 0 0 0 -3.7239,-2.438096 z"/>
+        <path fill="var(--color-text-primary)" d="m -1106.5249,108.08226 -1.3,-3.364 h -2.4 l 2.516,5.972 -2.66,6.328 h 2.38 l 1.464,-3.78 1.464,3.78 h 2.408 l-2.668,-6.328 2.516,-5.972 h-2.4 z"/>
+      </g>
+    </svg>
+    <h1>CV Builder Pro — Phase Tracker</h1>
+    <div class="meta">
+      <div class="meta-stat"><span class="val" id="total-done">0</span><span class="lbl">Tasks done</span></div>
+      <div class="meta-stat"><span class="val" id="test-count">61</span><span class="lbl">Test assertions</span></div>
+    </div>
+  </div>
+
+  <div class="global-bar-wrap">
+    <div class="global-bar-top">
+      <strong>Overall project progress</strong>
+      <span id="global-pct">0%</span>
+    </div>
+    <div class="gbar"><div class="gbar-fill" id="global-fill" style="width:0%"></div></div>
+  </div>
+
+  <div class="phase-grid" id="phases">
+  </div>
+
+  <div class="action-row">
+    <button class="action-btn" onclick="expandAll()">Expand all</button>
+    <button class="action-btn" onclick="collapseAll()">Collapse all</button>
+    <button class="action-btn primary" onclick="sendPrompt('Phase 2 is fully complete. Now build Phase 3: the CV Builder — multi-step form (personal info, experience, education, skills, languages, certificates), AJAX auto-save with debounce, and drag-and-drop section reordering with Sortable.js.')">Start Phase 2 UI Shell ↗</button>
+  </div>
+</div>
+
+<script>
+const phases = [
+  {
+    id: 1,
+    title: 'Foundation',
+    sub: 'DB schema · Config · PDO · Helpers',
+    status: 'done',
+    tasks: [
+      { text: 'Database schema (9 tables, foreign keys, utf8mb4)', tag: 'core', done: true },
+      { text: 'Project folder structure (MVC-like layout)', tag: 'core', done: true },
+      { text: 'Config file (constants, paths, branding)', tag: 'core', done: true },
+      { text: 'Database.php — PDO singleton + query helpers', tag: 'core', done: true },
+      { text: 'helpers.php — Session, CSRF, auth, flash, sanitize', tag: 'core', done: true },
+      { text: 'bootstrap.php — single require entry point', tag: 'core', done: true },
+      { text: '.htaccess — security headers + asset caching', tag: 'security', done: true },
+    ],
+    tests: [
+      { file: 'tests/unit/HelpersTest.php', count: '22 tests' },
+      { file: 'tests/unit/DatabaseTest.php', count: '11 tests' },
+      { file: 'tests/unit/CompletenessTest.php', count: '16 tests' },
+      { file: 'tests/integration/AuthIntegrationTest.php', count: '12 tests' },
+    ]
+  },
+  {
+    id: 2,
+    title: 'Auth + UI Shell',
+    sub: 'Login · Register · Forgot/Reset · Dashboard',
+    status: 'done',
+    tasks: [
+      { text: 'login.php — SC-branded, animated, remember-me, CSRF', tag: 'ui', done: true },
+      { text: 'register.php — validation chain, strength meter, terms', tag: 'ui', done: true },
+      { text: 'forgot.php — token generation, anti-enumeration, dev link', tag: 'security', done: true },
+      { text: 'reset.php — token verify, strength meter, match hint', tag: 'security', done: true },
+      { text: 'logout.php — session destroy, remember-me cookie clear', tag: 'security', done: true },
+      { text: 'auth_service.php — register/login/change-password service layer', tag: 'core', done: true },
+      { text: 'Base layout shell (navbar, sidebar, dark/light toggle)', tag: 'ui', done: true },
+      { text: 'Dashboard — CV cards, completeness rings, stats', tag: 'ui', done: true },
+      { text: 'Account settings page (profile, change password)', tag: 'ui', done: true },
+    ],
+    tests: [
+      { file: 'tests/unit/ValidationTest.php', count: 'planned' },
+      { file: 'tests/integration/DashboardTest.php', count: 'planned' },
+    ]
+  },
+  {
+    id: 3,
+    title: 'CV Builder',
+    sub: 'Multi-step form · AJAX auto-save · Drag-drop',
+    status: 'active',
+    tasks: [
+      { text: 'Personal info step (photo upload + crop)', tag: 'core', done: false },
+      { text: 'Experience step (add/remove/reorder)', tag: 'core', done: false },
+      { text: 'Education step (add/remove/reorder)', tag: 'core', done: false },
+      { text: 'Skills step (tag input, level selector)', tag: 'core', done: false },
+      { text: 'Languages step (proficiency selector)', tag: 'core', done: false },
+      { text: 'Certificates step', tag: 'core', done: false },
+      { text: 'AJAX auto-save with debounce', tag: 'core', done: false },
+      { text: 'Drag-and-drop section reordering (Sortable.js)', tag: 'ui', done: false },
+    ],
+    tests: [
+      { file: 'tests/integration/CVBuilderTest.php', count: 'planned' },
+      { file: 'tests/unit/UploadValidationTest.php', count: 'planned' },
+    ]
+  },
+  {
+    id: 4,
+    title: 'Preview + Export',
+    sub: 'Live preview · 3 templates · PDF · Word · Arabic RTL',
+    status: 'pending',
+    tasks: [
+      { text: 'Live preview panel (real-time right side)', tag: 'ui', done: false },
+      { text: 'Classic template (HTML/CSS)', tag: 'ui', done: false },
+      { text: 'Modern template (HTML/CSS)', tag: 'ui', done: false },
+      { text: 'Minimal template (HTML/CSS)', tag: 'ui', done: false },
+      { text: 'PDF export — TCPDF/DomPDF server-side render', tag: 'export', done: false },
+      { text: 'Word export — PHPWord structured .docx', tag: 'export', done: false },
+      { text: 'Arabic RTL per-section toggle + IBM Plex Sans Arabic', tag: 'core', done: false },
+    ],
+    tests: [
+      { file: 'tests/unit/ExportTest.php', count: 'planned' },
+      { file: 'tests/unit/TemplateRenderTest.php', count: 'planned' },
+    ]
+  },
+  {
+    id: 5,
+    title: 'Admin + Polish + Deploy',
+    sub: 'Admin panel · Animations · Security · Live',
+    status: 'pending',
+    tasks: [
+      { text: 'Admin panel (users, CV stats, export log)', tag: 'core', done: false },
+      { text: 'CSS animations (page transitions, step slide-ins)', tag: 'ui', done: false },
+      { text: 'Skeleton loaders + toast notification system', tag: 'ui', done: false },
+      { text: 'Security hardening (CSRF everywhere, rate limiting)', tag: 'security', done: false },
+      { text: 'File upload validation (type, size, extension)', tag: 'security', done: false },
+      { text: 'Deploy to abubakr.rf.gd — test all flows live', tag: 'core', done: false },
+    ],
+    tests: [
+      { file: 'tests/integration/AdminTest.php', count: 'planned' },
+      { file: 'tests/unit/SecurityTest.php', count: 'planned' },
+    ]
+  }
+];
+
+const tagColors = { core:'tag-core', ui:'tag-ui', test:'tag-test', export:'tag-export', security:'tag-security' };
+
+function renderPhases() {
+  const container = document.getElementById('phases');
+  container.innerHTML = '';
+  phases.forEach((phase, pi) => {
+    const numClass   = phase.status === 'done' ? 'ph-done' : phase.status === 'active' ? 'ph-active' : 'ph-pending';
+    const badgeClass = phase.status === 'done' ? 'badge-done' : phase.status === 'active' ? 'badge-active' : 'badge-pending';
+    const badgeText  = phase.status === 'done' ? 'Complete' : phase.status === 'active' ? 'In progress' : 'Pending';
+    const doneTasks  = phase.tasks.filter(t => t.done).length;
+    const pct        = Math.round((doneTasks / phase.tasks.length) * 100);
+
+    const card = document.createElement('div');
+    card.className = 'phase-card';
+    card.innerHTML = `
+      <div class="phase-head" onclick="togglePhase(${pi})">
+        <div class="phase-num ${numClass}">${phase.id}</div>
+        <div class="phase-info">
+          <div class="phase-title">Phase ${phase.id} — ${phase.title}</div>
+          <div class="phase-sub">${phase.sub}</div>
+        </div>
+        <span class="phase-badge ${badgeClass}">${badgeText}</span>
+        <span class="chevron" id="chev-${pi}">▼</span>
+      </div>
+      <div class="phase-bar-wrap"><div class="phase-bar-fill" id="pbar-${pi}" style="width:${pct}%"></div></div>
+      <div class="phase-tasks" id="tasks-${pi}">
+        <div class="task-list">
+          ${phase.tasks.map((t, ti) => `
+            <div class="task" onclick="toggleTask(${pi},${ti})">
+              <div class="tbox ${t.done ? 'done' : ''}" id="tbox-${pi}-${ti}"></div>
+              <span class="task-text">${t.text}</span>
+              <span class="task-tag ${tagColors[t.tag] || 'tag-core'}">${t.tag}</span>
+            </div>
+          `).join('')}
+        </div>
+        ${phase.tests.length ? `
+          <div class="divider"></div>
+          <div class="test-section">
+            <div class="test-section-title">Test files for this phase</div>
+            ${phase.tests.map(tf => `
+              <div class="test-file">
+                <span class="name">${tf.file}</span>
+                <span class="count">${tf.count}</span>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+  updateGlobal();
+}
+
+function toggleTask(pi, ti) {
+  phases[pi].tasks[ti].done = !phases[pi].tasks[ti].done;
+  document.getElementById(`tbox-${pi}-${ti}`).classList.toggle('done');
+  const doneTasks = phases[pi].tasks.filter(t => t.done).length;
+  const pct = Math.round((doneTasks / phases[pi].tasks.length) * 100);
+  document.getElementById(`pbar-${pi}`).style.width = pct + '%';
+  updateGlobal();
+}
+
+function togglePhase(pi) {
+  const tasks = document.getElementById(`tasks-${pi}`);
+  const chev  = document.getElementById(`chev-${pi}`);
+  tasks.classList.toggle('collapsed');
+  chev.textContent = tasks.classList.contains('collapsed') ? '▶' : '▼';
+}
+function expandAll()  { phases.forEach((_, pi) => { document.getElementById(`tasks-${pi}`).classList.remove('collapsed'); document.getElementById(`chev-${pi}`).textContent = '▼'; }); }
+function collapseAll(){ phases.forEach((_, pi) => { document.getElementById(`tasks-${pi}`).classList.add('collapsed');    document.getElementById(`chev-${pi}`).textContent = '▶'; }); }
+
+function updateGlobal() {
+  const allTasks = phases.flatMap(p => p.tasks);
+  const done     = allTasks.filter(t => t.done).length;
+  const pct      = Math.round((done / allTasks.length) * 100);
+  document.getElementById('global-fill').style.width = pct + '%';
+  document.getElementById('global-pct').textContent  = pct + '%';
+  document.getElementById('total-done').textContent  = done;
+}
+
+renderPhases();
+setTimeout(updateGlobal, 200);
+</script>
+

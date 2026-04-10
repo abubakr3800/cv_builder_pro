@@ -1,0 +1,7 @@
+/vendor
+*.zip
+*.tar.gz
+*.log
+*.cache
+.DS_Store
+.idea/

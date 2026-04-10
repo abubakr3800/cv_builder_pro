@@ -1,0 +1,39 @@
+{
+    "name": "abubakr/cv-builder-pro",
+    "description": "CV Builder Pro — PHP/MySQL/Bootstrap CV Management System",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Ahmed Mohamed Abubakr",
+            "homepage": "https://abubakr.rf.gd/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "tecnickcom/tcpdf": "^6.6",
+        "phpoffice/phpword": "^1.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "CVBuilder\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CVBuilder\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test":         "phpunit --testdox --colors=always",
+        "test-unit":    "phpunit --testsuite=Unit --testdox --colors=always",
+        "test-integration": "phpunit --testsuite=Integration --testdox --colors=always",
+        "test-coverage":"phpunit --coverage-html coverage/"
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}
